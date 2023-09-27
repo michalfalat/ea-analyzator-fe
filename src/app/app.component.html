@@ -1,13 +1,9 @@
 <mat-toolbar color="primary">
-  <span>Analyzator obchodneho systemu</span>
+  <span>Pair symbol arbitrage tester</span>
   <span class="example-spacer"></span>
 </mat-toolbar>
 
-<input
-  type="file"
-  #csvReader
-  name="Upload CSV"
-  id="txtFileUpload"
-  (change)="uploadListener($event)"
-  accept=".csv"
-/>
+<div class="p-4">
+
+  <router-outlet></router-outlet>
+</div>

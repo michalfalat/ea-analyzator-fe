@@ -1,0 +1,45 @@
+<div class="d-flex gap-2">
+
+  <mat-form-field style="width: 200px">
+    <input matInput [(ngModel)]="winRate" placeholder="Win Rate [%]" />
+  </mat-form-field>
+  <mat-form-field style="width: 200px">
+    <input matInput [(ngModel)]="iterations" placeholder="Pocet iteracii" />
+  </mat-form-field>
+  <mat-form-field style="width: 200px">
+    <input matInput [(ngModel)]="numberOfExperimentPerIteration" placeholder="Pocet kol na iteraciu" />
+  </mat-form-field>
+
+  <mat-form-field style="width: 200px">
+    <input matInput [(ngModel)]="startingAccountSum" placeholder="Pociatocny stav uctu" />
+  </mat-form-field>
+
+  <mat-form-field style="width: 400px">
+    <mat-select [(ngModel)]="levelMultipliers" [multiple]="true" placeholder="Levely">
+      <mat-option *ngFor="let level of allLevelMultipliers" [value]="level">
+        {{ level }}
+      </mat-option>
+    </mat-select>
+
+  </mat-form-field>
+
+
+
+  <button mat-raised-button color="primary" (click)="onProcess()">Vypocet</button>
+</div>
+
+
+<div *ngIf="finalProbability" style="display: block; width: 650px; height: 300px;">
+
+  <h1>Vysledna celkova pravdepodobnost vyhry P<sub>win</sub>: {{ finalProbability | number: '1.2-2' }}%</h1>
+  <h1>Vysledny stav uctu: {{ finalAccountSum | currency }}</h1>
+  <h1>Maximalny Drawdown: {{ maxDrawdown | currency }}</h1>
+  <h1>Maximalny Relativny Drawdown: {{ maxRelativeDrawdown | number: '1.2-2' }}%</h1>
+  <h1>Maximalny pocet za sebou iducich strat: {{ finalConsecutiveLossCounter }}</h1>
+  <canvas baseChart [data]="probabilityData" [options]="probabilityTestOptions" [type]="'line'">
+  </canvas>
+
+  <br>
+  <canvas baseChart [data]="martingaleData" [options]="martingaleTestOptions" [type]="'line'">
+  </canvas>
+</div>

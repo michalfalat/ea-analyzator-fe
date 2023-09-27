@@ -1,0 +1,98 @@
+<div [formGroup]="form!">
+
+  <div class="flex gap-4 place-content-center">
+    <mat-form-field style="width: 350px">
+      <mat-select formControlName="symbol1" placeholder="Symbol 1">
+        <mat-option>
+          <ngx-mat-select-search placeholderLabel="Search symbol..." noEntriesFoundLabel="No matching symbol found"
+            #symbol1Search></ngx-mat-select-search>
+        </mat-option>
+        <mat-option
+          *ngFor="let symbol of allSymbols! | filter: ['name', 'symbol']: symbol1Search.value || form?.value.symbol1"
+          [value]="symbol?.symbol">
+          {{ symbol.name ? symbol.name + ' (' + symbol.symbol + ')' : symbol.symbol }}
+        </mat-option>
+      </mat-select>
+
+    </mat-form-field>
+
+    <mat-form-field style="width: 350px">
+      <mat-select formControlName="symbol2" placeholder="Symbol 2">
+        <mat-option>
+          <ngx-mat-select-search placeholderLabel="Search symbol..." noEntriesFoundLabel="No matching symbol found"
+            #symbol2Search></ngx-mat-select-search>
+        </mat-option>
+        <mat-option
+          *ngFor="let symbol of allSymbols! | filter: ['name', 'symbol']: symbol2Search.value || form?.value.symbol2"
+          [value]="symbol?.symbol">
+          {{ symbol.name ? symbol.name + ' (' + symbol.symbol + ')' : symbol.symbol }}
+        </mat-option>
+      </mat-select>
+
+    </mat-form-field>
+
+
+    <mat-form-field style="width: 200px">
+      <input matInput formControlName="days" placeholder="Number of days to test" />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" [disabled]="form?.invalid" (click)="loadData()">Compare Symbols</button>
+  </div>
+
+  <ng-container *ngIf="data">
+
+    <h1 class="text-3xl font-bold">
+      Correlation: <span [style.color]="correlationColor">{{ data.correlation | number }} </span>
+    </h1>
+    <h1 class="text-3xl font-bold">
+      Cointegration: <span [style.color]="cointegrationColor"> {{ data.cointegration | number }}</span>
+    </h1>
+    <div style="height: 400px;" class="flex gap-4">
+      <div style="display: block; width: 50%; height: 300px;">
+        <canvas baseChart [data]="symbol1OhlcChartData" [options]="candleChartOptions" [type]="candleChartType">
+        </canvas>
+      </div>
+
+      <div style="display: block; width: 50%; height: 300px;">
+
+        <canvas baseChart [data]="symbol2OhlcChartData" [options]="candleChartOptions" [type]="candleChartType">
+        </canvas>
+      </div>
+
+    </div>
+
+    <div class="flex">
+
+
+      <div style="display: flex; width: 50%; height: 300px;">
+        <canvas baseChart class="chart" [data]="spreadChartData" [options]="spreadChartOptions"
+          [type]="spreadChartType"></canvas>
+
+      </div>
+
+
+      <div class="flex flex-col m-auto">
+
+        <h2>Kalman options:</h2>
+
+
+        <mat-label>Noise covariance: {{kalmanQValueControl.value }}</mat-label>
+        <mat-slider min="0.00001" max="0.001" step="0.00001" [value]="kalmanQValueControl.value"
+          (input)="kalmanQValueControl.setValue($event.value);applyKalman()">
+          <input matSliderThumb>
+        </mat-slider>
+
+        <mat-label>Measurement Noise covariance: {{kalmanRValueControl.value }}</mat-label>
+        <mat-slider min="0.01" max="1" step="0.01" [value]="kalmanRValueControl.value"
+          (input)="kalmanRValueControl.setValue($event.value);applyKalman()">
+          <input matSliderThumb>
+        </mat-slider>
+
+        <button mat-raised-button color="primary" (click)="applyKalman()">Apply</button>
+      </div>
+    </div>
+
+
+  </ng-container>
+
+</div>
