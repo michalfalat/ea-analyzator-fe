@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "deploy": "ng deploy --base-href=https://michalfalat.github.io/ea-analyzator-fe/"
   },
   "private": true,
   "dependencies": {
@@ -21,6 +22,7 @@
     "@angular/platform-browser-dynamic": "~13.1.0",
     "@angular/router": "~13.1.0",
     "@types/random": "3.0.1",
+    "bootstrap": "5.3.2",
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-chart-financial": "^0.1.1",
     "chartjs-plugin-annotation": "^2.2.1",
@@ -41,6 +43,7 @@
     "@types/jasmine": "~3.10.0",
     "@types/lodash-es": "^4.17.7",
     "@types/node": "^12.11.1",
+    "angular-cli-ghpages": "1.0.7",
     "autoprefixer": "^10.4.14",
     "jasmine-core": "~3.10.0",
     "karma": "~6.3.0",

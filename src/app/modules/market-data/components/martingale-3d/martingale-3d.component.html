@@ -1,45 +1,67 @@
 <div class="d-flex gap-2">
 
-  <mat-form-field style="width: 200px">
-    <input matInput [(ngModel)]="winRate" placeholder="Win Rate [%]" />
-  </mat-form-field>
-  <mat-form-field style="width: 200px">
-    <input matInput [(ngModel)]="iterations" placeholder="Pocet iteracii" />
-  </mat-form-field>
-  <mat-form-field style="width: 200px">
-    <input matInput [(ngModel)]="numberOfExperimentPerIteration" placeholder="Pocet kol na iteraciu" />
-  </mat-form-field>
+  <div class="d-flex flex-col w-50 gap-2">
 
-  <mat-form-field style="width: 200px">
-    <input matInput [(ngModel)]="startingAccountSum" placeholder="Pociatocny stav uctu" />
-  </mat-form-field>
+    <div>
+      <mat-form-field class="w-50">
+        <input matInput [(ngModel)]="winRate" placeholder="Win Rate [%]" type="number" min="0" max="100" />
+      </mat-form-field>
+      <mat-form-field class="w-50">
+        <input matInput [(ngModel)]="riskToRewardRatio"
+          [placeholder]="'Risk to Reward pomer (Zisk je ' + winMultiplier + 'x vyssi ako strata)'"
+          (ngModelChange)="onCalculateWinMultiplier()" />
+      </mat-form-field>
+    </div>
 
-  <mat-form-field style="width: 400px">
-    <mat-select [(ngModel)]="levelMultipliers" [multiple]="true" placeholder="Levely">
-      <mat-option *ngFor="let level of allLevelMultipliers" [value]="level">
-        {{ level }}
-      </mat-option>
-    </mat-select>
+    <div class="d-flex gap-2">
 
-  </mat-form-field>
+      <mat-form-field class="w-50">
+        <input matInput [(ngModel)]="iterations" placeholder="Pocet iteracii" />
+      </mat-form-field>
+      <mat-form-field class="w-50">
+        <input matInput [(ngModel)]="numberOfExperimentPerIteration" placeholder="Pocet kol na iteraciu" />
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="w-100">
+      <input matInput [(ngModel)]="startingAccountSum" placeholder="Pociatocny stav uctu" />
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <input matInput [(ngModel)]="levelMultipliersValue" (ngModelChange)="onCalculateLevelMultipliers()"
+        placeholder="Levely (oddelene ciarkou)" />
+    </mat-form-field>
+    <p>Pocet levelov: <b>{{levelMultipliers.length }} </b> <span class="small"> {{ levelMultipliers | json }}</span></p>
+
+    <button mat-raised-button color="primary" (click)="onProcess()">Vypocet</button>
+  </div>
+
+  <div *ngIf="finalProbability" class="px-5">
+    <h1>Vysledna celkova pravdepodobnost vyhry P<sub>win</sub>: {{ finalProbability | number: '1.2-2' }}%</h1>
+    <h1>Vysledny stav uctu: <span [class.text-danger]="finalAccountSum <= 0">{{ finalAccountSum | currency }}</span>
+    </h1>
+    <h1>Maximalny Drawdown: {{ maxDrawdown | currency }}</h1>
+    <h1>Maximalny Relativny Drawdown:<span [class.text-danger]="maxRelativeDrawdown >=30"> {{ maxRelativeDrawdown |
+        number: '1.2-2' }}%</span></h1>
+    <h1>Maximalny pocet za sebou iducich strat: <span
+        [class.text-danger]="finalConsecutiveLossCounter > levelMultipliers.length"> {{ finalConsecutiveLossCounter
+        }}</span></h1>
+  </div>
 
 
-
-  <button mat-raised-button color="primary" (click)="onProcess()">Vypocet</button>
 </div>
 
 
-<div *ngIf="finalProbability" style="display: block; width: 650px; height: 300px;">
+<div *ngIf="finalProbability" class="d-flex gap-2 w-100 mt-5">
 
-  <h1>Vysledna celkova pravdepodobnost vyhry P<sub>win</sub>: {{ finalProbability | number: '1.2-2' }}%</h1>
-  <h1>Vysledny stav uctu: {{ finalAccountSum | currency }}</h1>
-  <h1>Maximalny Drawdown: {{ maxDrawdown | currency }}</h1>
-  <h1>Maximalny Relativny Drawdown: {{ maxRelativeDrawdown | number: '1.2-2' }}%</h1>
-  <h1>Maximalny pocet za sebou iducich strat: {{ finalConsecutiveLossCounter }}</h1>
-  <canvas baseChart [data]="probabilityData" [options]="probabilityTestOptions" [type]="'line'">
-  </canvas>
+  <div class="w-50">
+    <canvas baseChart [data]="probabilityData" [options]="probabilityTestOptions" [type]="'line'">
+    </canvas>
+  </div>
 
-  <br>
-  <canvas baseChart [data]="martingaleData" [options]="martingaleTestOptions" [type]="'line'">
-  </canvas>
+  <div class="w-50">
+    <canvas baseChart [data]="martingaleData" [options]="martingaleTestOptions" [type]="'line'">
+    </canvas>
+
+  </div>
 </div>

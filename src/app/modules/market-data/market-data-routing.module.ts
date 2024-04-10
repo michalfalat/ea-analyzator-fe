@@ -3,10 +3,19 @@ import { RouterModule, Routes } from '@angular/router';
 import { ExchangesComponent } from './components/exchanges/exchanges.component';
 import { Martingale3DComponent } from './components/martingale-3d/martingale-3d.component';
 import { PairComparissionComponent } from './components/pair-comparission/pair-comparission.component';
+import { StrategyTesterComponent } from './components/strategy-tester/strategy-tester.component';
 
 const routes: Routes = [
   {
     path: '',
+    component: Martingale3DComponent
+  },
+  {
+    path: 'strategy-tester',
+    component: StrategyTesterComponent,
+  },
+  {
+    path: 'arbitrage-tester',
     component: PairComparissionComponent
   },
   {

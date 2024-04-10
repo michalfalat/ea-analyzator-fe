@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://127.0.0.1:5000'
+  apiUrl: 'https://ea-api.innvision.sk:3008'
 };
 
 /*

@@ -1,9 +1,11 @@
-<mat-toolbar color="primary">
-  <span>Pair symbol arbitrage tester</span>
+<mat-toolbar color="primary" class="d-flex gap-4">
+  <a mat-flat-button color="primary" [routerLink]="'martingale-3d'" routerLinkActive="active-button">Martingale 3D</a>
+  <a mat-flat-button color="primary" [routerLink]="'strategy-tester'" routerLinkActive="active-button">Strategy
+    Tester</a>
   <span class="example-spacer"></span>
+  <span class="mat-body">v1.0.9</span>
 </mat-toolbar>
 
 <div class="p-4">
-
   <router-outlet></router-outlet>
 </div>

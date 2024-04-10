@@ -1,0 +1,34 @@
+<div class="flex flex-row gap-4 place-content-center mb-5">
+  <button mat-flat-button color="primary" *ngFor="let predefined of predefinedSymbols" (click)="preselect(predefined)">
+    {{ predefined?.name }}
+  </button>
+</div>
+<div class="flex gap-4 place-content-center mb-5">
+
+  <ng-container [formGroup]="form">
+
+    <mat-form-field class="w-1/2">
+      <mat-select [formControlName]="'symbol'" placeholder="Symbol">
+        <mat-option>
+          <ngx-mat-select-search [formControlName]="'symbolSearch'" placeholderLabel="Search symbol..."
+            noEntriesFoundLabel="No matching symbol found" #symbol1Search></ngx-mat-select-search>
+        </mat-option>
+        <mat-option *ngFor="let symbol of filteredSymbols" [value]="symbol?.symbol">
+          {{ symbol.name ? symbol.name + ' (' + symbol.symbol + ')' : symbol.symbol }}
+        </mat-option>
+      </mat-select>
+
+    </mat-form-field>
+
+
+    <button mat-raised-button color="primary" [disabled]="form?.invalid || isLoading || dataLoaded"
+      (click)="loadData()">
+      {{ dataLoaded ? 'Data nacitane' : 'Nacitat Data'}}</button>
+
+  </ng-container>
+</div>
+
+<mat-spinner *ngIf="isLoading" class="m-auto"></mat-spinner>
+
+<app-ohlc-analyzator *ngIf="ohlcData && !isLoading" [symbol]="form.value.symbol" [ohlcData]="ohlcData">
+</app-ohlc-analyzator>

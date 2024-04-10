@@ -1,0 +1,6 @@
+<div class="d-flex flex-column gap-2">
+  <mat-checkbox [ngModel]="filterActive" color="primary" (change)="onFilterActive()">Use Filter conditions (LONG)
+  </mat-checkbox>
+
+  <app-sma-filter *ngIf="filterActive" (change$)="onChange($event)"></app-sma-filter>
+</div>

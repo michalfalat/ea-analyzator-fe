@@ -1,0 +1,17 @@
+<div class="d-flex gap-2">
+
+  <div class="d-flex gap-2" [formGroup]="form">
+    <mat-form-field class="w-50">
+      <mat-select [formControlName]="'type'" placeholder="Filter Type">
+        <mat-option *ngFor="let option of filterTypeOptions" [value]="option.type">
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="w-50">
+      <input matInput [formControlName]="'period'" placeholder="Period" type="number" />
+    </mat-form-field>
+  </div>
+
+
+</div>
